@@ -10,7 +10,7 @@ This is a MailWizz extension that intercepts an email before it is sent, sends t
 3. [Configuration](#configuration)
 4. [Contributing](#contributing)
 5. [License](#license)
-6. [Contact](#contact)=
+6. [Contact](#contact)
 
 ---
 ## Installation
@@ -51,13 +51,13 @@ ollama run <model_name>
    Enter your desired prompt for Ollama in the input box (this will be sent along with the email content to the Ollama model).
 4. Click Save.
 Once this is done, the extension will intercept outgoing emails, send them to Ollama for modification, and return the processed email content.
----
+
 ## Configuration
 You can modify the behavior of the extension and its interaction with the Ollama model by adjusting the following:
 
    **Model Selection**: As mentioned, change the model name on line 106 of the OllamaExt.php file if you want to use a model other than deepseek-r1:1.5b.
    **Ollama Prompt**: The prompt you enter in the extension settings in MailWizz will be passed to Ollama along with the email content. This allows you to provide context or specific instructions to guide the AI.
----
+
 ## Contributing
 We welcome contributions to this extension! If you would like to improve or add features, feel free to:
 
@@ -66,10 +66,10 @@ We welcome contributions to this extension! If you would like to improve or add 
 3. Make your changes and commit them (git commit -m 'Add feature').
 4. Push to your fork (git push origin feature-branch).
 5. Create a pull request from your fork.
----
+
 ## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
----
+
 ## Contact
 If you encounter any issues or need help setting up the extension, feel free to contact us at:
 Email: ai@perceptsystems.com
