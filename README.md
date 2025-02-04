@@ -33,7 +33,7 @@ After installing Ollama, open your terminal or command line.
 Run the following command to start the deepseek-r1:1.5b model (or your chosen model):
 
 ```bash
-   ollama run deepseek-r1:1.5b
+ollama run deepseek-r1:1.5b
 ```
 If you want to use a different model, replace deepseek-r1:1.5b with the model name. For example:
 
