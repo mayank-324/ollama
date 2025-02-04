@@ -1,6 +1,6 @@
 # Ollama Extension for MailWizz
 
-This is a MailWizz extension that intercepts an email before it is sent, sends the email body and subject to **Ollama**, and uses any model on Ollama to modify the content. The extension allows you to enhance and refine email content before sending it out, utilizing powerful AI models like **deepseek-r1:1.5b**.
+This is a MailWizz extension that intercepts an email before it is sent, sends the email body and subject to **Ollama**, and uses any model on Ollama to modify the content. The extension allows you to enhance and refine email content before sending it out, utilizing powerful AI models like **deepseek-r1**.
 
 ---
 
