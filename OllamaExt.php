@@ -74,6 +74,16 @@ class OllamaExt extends ExtensionInit
         // Hook into the email delivery process.
         Yii::app()->hooks->addFilter('delivery_server_before_send_email', function($params, $server) {
             if (isset($params['body'], $params['subject'])) {
+                $logFile = '/var/www/html/mailwizz-new/mailwizz-extension-debug.log';
+                 
+                // Prepare the log data
+                $logData = "----- Debug Log -----\n";
+                $logData .= "Subject: " . $params['subject'] . "\n";
+                $logData .= "Body:\n" . $params['body'] . "\n";
+                $logData .= "----------------------\n";
+                
+                // Write to the log file, replacing existing content
+                file_put_contents($logFile, $logData);
                 // Get the Ollama prompt from the extension options.
                 $extension = Yii::app()->extensionsManager->getExtensionInstance('ollama');
                 $ollamaPrompt = $extension->getOption('ollama_prompt', '');
@@ -89,25 +99,34 @@ class OllamaExt extends ExtensionInit
                 
                 $promptContent = <<<EOT
                     You are an expert email editor.
+
+                    Your task is to refine the following email to make it more engaging, persuasive, and professional while preserving the original HTML structure, inline styles, and formatting.
+
                     Follow these custom instructions: "$ollamaPrompt".
 
-                    Here is the original email:
-                    Subject: "$subject"
-                    Body: "$body"
+                    ### **Rules:**
+                    - Modify only the **text content** of the email; do **not** change any HTML, CSS, or inline styles.
+                    - Do **not** add or remove any `<html>`, `<head>`, `<body>`, `<style>`, `<div>`, `<p>`, `<table>`, or other structural tags.
+                    - Ensure that all hyperlinks (`<a>` tags), image sources (`<img>` tags), and styling remain exactly the same.
+                    - Only improve the **visible text** within these tags while keeping the email's structure intact.
+                    - The **subject** should be refined but remain similar in meaning.
 
-                    Please refine the email so that:
-                    - The subject is attention-grabbing, concise, and professional.
-                    - The body is clear, engaging, and professional.
-                    Return the result strictly as a JSON object with the keys "refined_subject" and "refined_body".
-                    Do not include any additional text or commentary.
+                    ### **Input:**
+                    - **Subject:** "$subject"
+                    - **HTML Body:** 
+                    "$body"
                     EOT;
                 
                 $payload = json_encode([
-                    "model" => "deepseek-r1:1.5b",
+                    "model" => "deepseek-custom2",
                     "messages" => [
                         ["role" => "user", "content" => $promptContent]
                     ],
                     "stream" => false,
+                    // "options" => [
+                    //     "temperature" => 0.6,
+                    //     "num_ctx" => 40000,
+                    // ],
                     "format" => [
                         "type" => "object",
                         "properties" => [
