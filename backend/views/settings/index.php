@@ -30,9 +30,14 @@ if ($viewCollection->renderContent) {
                     <?php echo $form->error($model, 'enabled'); ?>
                 </div>
                 <div class="form-group col-lg-10">
-                    <?php echo $form->labelEx($model, 'ollama_prompt'); ?>
-                    <?php echo $form->textField($model, 'ollama_prompt', $model->getHtmlOptions('ollama_prompt')); ?>
-                    <?php echo $form->error($model, 'ollama_prompt'); ?>
+                    <?php echo $form->labelEx($model, 'server_url'); ?>
+                    <?php echo $form->textField($model, 'server_url', $model->getHtmlOptions('server_url')); ?>
+                    <?php echo $form->error($model, 'server_url'); ?>
+                </div>
+                <div class="form-group col-lg-12">
+                    <?php echo $form->labelEx($model, 'model_name'); ?>
+                    <?php echo $form->textField($model, 'model_name', $model->getHtmlOptions('model_name')); ?>
+                    <?php echo $form->error($model, 'model_name'); ?>
                 </div>
                 <div class="clearfix"><!-- --></div>
             </div>
