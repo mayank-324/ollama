@@ -7,7 +7,7 @@ class OllamaExtCommon extends FormModel
 {
     public $enabled = 'no';
     public $server_url = 'http://localhost:11434/api/chat';
-    public $model_name = 'deepseek-r1:1.5b';
+    public $model_name = 'deepseek-r1:1.5b';    
 
     /**
      * @return array validation rules for model attributes.

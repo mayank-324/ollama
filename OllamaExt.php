@@ -65,6 +65,40 @@ class OllamaExt extends ExtensionInit
                 'extension' => $this,
             );
         }
+        
+        if ($this->isAppName('customer')) {
+            Yii::app()->hooks->addAction('after_active_form_fields', function (CAttributeCollection $collection) {
+                if (isset($collection->campaign, $collection->form)) {
+                    // Optionally, if your campaign model has properties for these fields you might use them,
+                    // otherwise, use default values.
+                    $campaign = $collection->campaign;
+                    $form     = $collection->form;
+                    
+                    // Use current posted values (if any) or default values.
+                    $useLlm    = isset($campaign->use_llm) ? $campaign->use_llm : 'no';
+                    $llmPrompt = isset($campaign->llm_prompt) ? $campaign->llm_prompt : '';
+                    
+                    // Render the fields – note that you can style the HTML as needed.
+                    echo '<div class="row">';
+
+                    echo '<div class="col-lg-2">';
+                    echo '<div class="form-group">';
+                        echo CHtml::label('Use LLM', 'campaign_use_llm');
+                        echo CHtml::dropDownList('campaign[use_llm]', $useLlm, array('no' => 'No', 'yes' => 'Yes'), array('class' => 'form-control'));
+                    echo '</div>';
+                    echo '</div>';
+                    
+                    echo '<div class="col-lg-10">';
+                    echo '<div class="form-group">';
+                        echo CHtml::label('LLM Prompt', 'campaign_llm_prompt');
+                        echo CHtml::textField('campaign[llm_prompt]', $llmPrompt, array('class' => 'form-control'));
+                    echo '</div>';
+                    echo '</div>';
+                    
+                    echo '</div>';
+                }
+            });
+        }
 
         // Only hook into email sending if the extension is enabled.
         if ($this->getOption('enabled', 'no') != 'yes') {
@@ -84,18 +118,10 @@ class OllamaExt extends ExtensionInit
                 
                 // // Write to the log file, replacing existing content
                 // file_put_contents($logFile, $logData);
-                // Get the Ollama prompt from the extension options.
                 $extension = Yii::app()->extensionsManager->getExtensionInstance('ollama');
-                // $ollamaPrompt = $extension->getOption('ollama_prompt', '');
 
                 $subject = $params['subject'];
                 $body = $params['body'];
-
-                // if (empty($ollamaPrompt)) {
-                //     $params['subject'] .= ' [no prompt provided]';
-                //     $params['body']    .= "\n\n-- No Ollama prompt was provided.";
-                //     return $params;
-                // }
                 
                 $promptContent = <<<EOT
                     You are an expert email editor.
