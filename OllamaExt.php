@@ -77,13 +77,13 @@ class OllamaExt extends ExtensionInit
                 $logFile = '/var/www/html/mailwizz-new/mailwizz-extension-debug.log';
                  
                 // Prepare the log data
-                $logData = "----- Debug Log -----\n";
-                $logData .= "Subject: " . $params['subject'] . "\n";
-                $logData .= "Body:\n" . $params['body'] . "\n";
-                $logData .= "----------------------\n";
+                // $logData = "----- Debug Log -----\n";
+                // $logData .= "Subject: " . $params['subject'] . "\n";
+                // $logData .= "Body:\n" . $params['body'] . "\n";
+                // $logData .= "----------------------\n";
                 
-                // Write to the log file, replacing existing content
-                file_put_contents($logFile, $logData);
+                // // Write to the log file, replacing existing content
+                // file_put_contents($logFile, $logData);
                 // Get the Ollama prompt from the extension options.
                 $extension = Yii::app()->extensionsManager->getExtensionInstance('ollama');
                 $ollamaPrompt = $extension->getOption('ollama_prompt', '');
