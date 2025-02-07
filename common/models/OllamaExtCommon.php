@@ -6,7 +6,8 @@
 class OllamaExtCommon extends FormModel
 {
     public $enabled = 'no';
-    public $ollama_prompt = '';
+    public $server_url = 'http://localhost:11434/api/chat';
+    public $model_name = 'deepseek-r1:1.5b';
 
     /**
      * @return array validation rules for model attributes.
@@ -14,7 +15,7 @@ class OllamaExtCommon extends FormModel
     public function rules()
     {
         $rules = array(
-            array('ollama_prompt', 'safe'),
+            array('server_url, model_name', 'safe'),
             array('enabled', 'in', 'range' => array_keys($this->getYesNoOptions())),
         );
         return CMap::mergeArray($rules, parent::rules());
@@ -26,8 +27,9 @@ class OllamaExtCommon extends FormModel
     public function attributeLabels()
     {
         $labels = array(
-            'enabled'       => Yii::t('app', 'Enabled'),
-            'ollama_prompt' => Yii::t('app', 'Ollama Prompt'),
+            'enabled'    => Yii::t('app', 'Enabled'),
+            'server_url' => Yii::t('app', 'Server URL'),
+            'model_name' => Yii::t('app', 'Model Name'),
         );
         return CMap::mergeArray($labels, parent::attributeLabels());
     }
@@ -37,9 +39,10 @@ class OllamaExtCommon extends FormModel
      */
     public function attributePlaceholders()
     {
-        $placeholders = array(
-            'ollama_prompt' => Yii::t('app', 'Enter your prompt for Ollama here...'),
-        );
+        $placeholders = [
+            'server_url' => 'http://localhost:11434/api/chat',
+            'model_name' => 'deepseek-r1:1.5b',
+        ];
         return CMap::mergeArray($placeholders, parent::attributePlaceholders());
     }
 
@@ -50,7 +53,8 @@ class OllamaExtCommon extends FormModel
     {
         $texts = array(
             'enabled'       => Yii::t('app', 'Whether the Ollama email refinement is enabled'),
-            'ollama_prompt' => Yii::t('app', 'The prompt that will be passed to Ollama to refine the email subject and body'),
+            'server_url' => Yii::t('app', 'The Enpoint where your ollama is hosted. eg : http://34.131.120.224/api/chat'),
+            'model_name' => Yii::t('app', 'The name of the model from ollama library, make sure to pull it first in your server.'),
         );
         return CMap::mergeArray($texts, parent::attributeHelpTexts());
     }
@@ -61,7 +65,7 @@ class OllamaExtCommon extends FormModel
     public function save()
     {
         $extension  = $this->getExtensionInstance();
-        $attributes = array('enabled', 'ollama_prompt');
+        $attributes = ['enabled', 'server_url', 'model_name'];
         foreach ($attributes as $name) {
             $extension->setOption($name, $this->$name);
         }
@@ -74,7 +78,7 @@ class OllamaExtCommon extends FormModel
     public function populate()
     {
         $extension  = $this->getExtensionInstance();
-        $attributes = array('enabled', 'ollama_prompt');
+        $attributes = ['enabled', 'server_url', 'model_name'];
         foreach ($attributes as $name) {
             $this->$name = $extension->getOption($name, $this->$name);
         }

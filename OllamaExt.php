@@ -86,23 +86,21 @@ class OllamaExt extends ExtensionInit
                 file_put_contents($logFile, $logData);
                 // Get the Ollama prompt from the extension options.
                 $extension = Yii::app()->extensionsManager->getExtensionInstance('ollama');
-                $ollamaPrompt = $extension->getOption('ollama_prompt', '');
+                // $ollamaPrompt = $extension->getOption('ollama_prompt', '');
 
                 $subject = $params['subject'];
                 $body = $params['body'];
 
-                if (empty($ollamaPrompt)) {
-                    $params['subject'] .= ' [no prompt provided]';
-                    $params['body']    .= "\n\n-- No Ollama prompt was provided.";
-                    return $params;
-                }
+                // if (empty($ollamaPrompt)) {
+                //     $params['subject'] .= ' [no prompt provided]';
+                //     $params['body']    .= "\n\n-- No Ollama prompt was provided.";
+                //     return $params;
+                // }
                 
                 $promptContent = <<<EOT
                     You are an expert email editor.
 
                     Your task is to refine the following email to make it more engaging, persuasive, and professional while preserving the original HTML structure, inline styles, and formatting.
-
-                    Follow these custom instructions: "$ollamaPrompt".
 
                     ### **Rules:**
                     - Modify only the **text content** of the email; do **not** change any HTML, CSS, or inline styles.
@@ -112,21 +110,33 @@ class OllamaExt extends ExtensionInit
                     - The **subject** should be refined but remain similar in meaning.
 
                     ### **Input:**
-                    - **Subject:** "$subject"
+                    - **Subject:** 
+                        "$subject"
                     - **HTML Body:** 
-                    "$body"
+                        "$body"
+                    EOT;
+
+                $systemPrompt = <<<EOT
+                    You are an expert email editor. Your task is to refine an email’s subject and body. 
+                    The subject is provided as plain text, and the body is provided as HTML/CSS code. 
+                    Improve the language to be more engaging, persuasive, and professional while keeping the original meaning intact.
+                    For the HTML/CSS email body, modify only the visible text content—do not alter any HTML tags, attributes, inline CSS, or the overall layout.
+
+                    Return your result in a valid JSON object with two keys: "refined_subject" for the improved subject and "refined_body" for the improved email body (HTML/CSS preserved exactly as provided, except for the refined text).
+
                     EOT;
                 
                 $payload = json_encode([
-                    "model" => "deepseek-custom2",
+                    "model" => "llama3.2:3b",
                     "messages" => [
+                        ["role" => "system", "content" => $systemPrompt],
                         ["role" => "user", "content" => $promptContent]
                     ],
                     "stream" => false,
-                    // "options" => [
-                    //     "temperature" => 0.6,
-                    //     "num_ctx" => 40000,
-                    // ],
+                    "options" => [
+                        "temperature" => 0.6,
+                        "num_ctx" => 40000,
+                    ],
                     "format" => [
                         "type" => "object",
                         "properties" => [
