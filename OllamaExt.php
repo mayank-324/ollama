@@ -82,18 +82,30 @@ class OllamaExt extends ExtensionInit
             }
             
             // Log entire POST data for debugging:
-            $logFile = '/var/www/html/mailwizz-new/mailwizz-extension-debug.log';
-            file_put_contents($logFile, print_r($_POST, true), FILE_APPEND);
+            // $logFile = '/var/www/html/mailwizz-new/mailwizz-extension-debug.log';
+            // file_put_contents($logFile, print_r($_POST, true), FILE_APPEND);
             
-            // Retrieve custom fields:
-            $useLLM    = Yii::app()->request->getPost('use_llm', 'no');
-            $llmPrompt = Yii::app()->request->getPost('llm_prompt', '');
+            // // Retrieve custom fields:
+            // $useLLM    = Yii::app()->request->getPost('use_llm', 'no');
+            // $llmPrompt = Yii::app()->request->getPost('llm_prompt', '');
             
-            $logData = "----- Debug Log -----\n";
-            $logData .= "yesno: " . $useLLM . "\n";
-            $logData .= "prompt: " . $llmPrompt . "\n";
-            $logData .= "----------------------\n";
-            file_put_contents($logFile, $logData, FILE_APPEND);
+            // $logData = "----- Debug Log -----\n";
+            // $logData .= "yesno: " . $useLLM . "\n";
+            // $logData .= "prompt: " . $llmPrompt . "\n";
+            // $logData .= "----------------------\n";
+            // file_put_contents($logFile, $logData, FILE_APPEND);
+            
+            // Save to CampaignOption, for example:
+            // $option = CampaignOption::model()->findByAttributes(['campaign_id' => (int)$campaign->campaign_id]);
+            // if (!$option) {
+            //     $option = new CampaignOption();
+            //     $option->campaign_id = (int)$campaign->campaign_id;
+            // }
+            // $option->use_llm    = $useLLM;
+            // $option->llm_prompt = $llmPrompt;
+            // if (!$option->save()) {
+            //     Yii::log(print_r($option->getErrors(), true), CLogger::LEVEL_ERROR);
+            // }
         });
         
 
@@ -143,7 +155,7 @@ class OllamaExt extends ExtensionInit
                     }
                 }
                 
-                file_put_contents($logFile, $subscriberFullName);
+                // file_put_contents($logFile, $subscriberFullName);
                 
                 $promptContent = <<<EOT
                     You are an expert email editor.
