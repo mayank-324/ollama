@@ -18,6 +18,7 @@ This is a MailWizz extension that intercepts an email before it is sent, sends t
 ### Step 1: Download the Extension
 1. **Clone this repository** or download it as a ZIP file.
 2. **Create a ZIP file** containing the extension's files (the entire repository or the files inside the extension folder) and upload it via the backend panel of your MailWizz installation.
+3. **Note**: Ensure that the zip file is named **"ollama"**, and that the extracted folder also carries the name **"ollama"**. For example, the main folder should be named **"ollama"** and it should contain all the necessary files and subfolders. Once everything is organized, zip the folder and name the resulting zip file **"ollama"**.
 
 ### Step 2: Install Ollama
 1. Go to the official [Ollama website](https://ollama.com/download) to download and install Ollama on your system.
@@ -26,7 +27,7 @@ This is a MailWizz extension that intercepts an email before it is sent, sends t
 ---
 ## Usage
 ### Step 1: Run the Ollama Model
-This extension uses the deepseek-r1:1.5b model by default. If you want to use a different model, you'll need to change the model name in the extension configuration file.
+This extension uses the deepseek-r1:1.5b model by default. If you want to use a different model, you'll need to change the model name in the extension settings page.
 
 After installing Ollama, open your terminal or command line.
 
@@ -40,15 +41,12 @@ If you want to use a different model, replace deepseek-r1:1.5b with the model na
 ```bash
 ollama run <model_name>
 ```
-### Step 2: Modify the Extension Configuration
-1. Open the file OllamaExt.php located in your extension folder.
-2. On line 106, replace deepseek-r1:1.5b with the name of the model you want to use.
-### Step 3: Upload and Activate the Extension in MailWizz
+### Step 2: Upload and Activate the Extension in MailWizz
 1. Go to the Extension List in MailWizz and upload the ZIP file of the extension.
 2. After uploading, activate the extension from the list.
 3. Go to Settings in the extension panel:
    Set Activate to Yes.
-   Enter your desired prompt for Ollama in the input box (this will be sent along with the email content to the Ollama model).
+   Enter your model name, which you installed locally, or leave the default, if you installed deepseek r1 1.5b.
 4. Click Save.
 Once this is done, the extension will intercept outgoing emails, send them to Ollama for modification, and return the processed email content.
 
